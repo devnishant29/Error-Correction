@@ -1,0 +1,48 @@
+.home {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.home-header {
+  text-align: center;
+}
+
+form {
+  margin-top: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input {
+  padding: 20px;
+  font-size: 16px;
+  display: block; /* Make the input a block element */
+  margin: 0 auto;
+  margin-bottom: 10px; /* Add margin below the input */
+}
+
+.buttons {
+  display: block;
+  padding: 10px;
+}
+
+.buttons button {
+  width: 150px;
+  height: 40px;
+  margin: 10px;
+  color: #242424;
+  font-weight: 700;
+  background-color: var(--color-primary-400);
+}
+.buttons button:hover {
+  background-color: var(--color-primary-800);
+}
+
+textarea { 
+  width: 320px;
+  height: 100px;
+ }
