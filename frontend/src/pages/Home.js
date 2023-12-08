@@ -8,38 +8,51 @@ axios.defaults.baseURL = "http://localhost:8080";
 const HomePage = () => {
 
   const [buttonState, setButtonState] = useState(1);
-
-
   const [input, setInput] = useState("");
-  const [response, setResponse] = useState("");
+  
+  const [response, setResponse] = useState(false);
+  const [output, setOutput] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(buttonState === 1) {
+    const encodedValue = encodeURIComponent(input);
+    console.log(encodedValue);
+  
+    if (buttonState === 1) {
       try {
+        console.log("hii bsdk");
         const result = await axios.post("/chatgpt", { prompt: input });
+        console.log(result.data.prompt);
         console.log(result);
-        setResponse(result.data.text);
+        setOutput(result.data.text);
       } catch (error) {
         console.error(error);
-        setResponse("An error occurred while processing your request via Chat GPT");
+        console.log(error);
+        setResponse(true);
+        setOutput("An error occurred while processing your request via Chat GPT");
       }
-    } else{
+    } else {
       try {
-        const result = await axios.post("/stack", { prompt: input });
-        console.log(result);
-        setResponse(result.data.text);
+        console.log("Fetching data from /stack");
+        const result = await axios.get(`https://api.stackexchange.com/2.3/search?order=asc&sort=votes&intitle=${encodedValue}&site=stackoverflow`); // Assuming it's a GET request
+        console.log(result.data);
+        setResponse(true)
+        setOutput(result.data.items);
+        console.log(`////////////${output}`)
+      //  console.log(typeof result.data);
+      
       } catch (error) {
         console.error(error);
-        setResponse("An error occurred while processing your request via Stack");
+        setResponse(true);
+        setOutput("An error occurred while fetching data from /stack");
       }
     }
   };
-
+  
   return (
     <PageContent title="Question">
       <form onSubmit={handleSubmit}>
-        <label htmlFor="input">Enter Your Error</label>
+        <label htmlFor="input">Enter Your Question</label>
         <textarea
           className="question_area"
           type="text"
@@ -57,13 +70,22 @@ const HomePage = () => {
         </div>
       </form>
       <div>
-        {response && (
-          <div>
-            <h2>Generated Response:</h2>
-            <p>{response}</p>
-          </div>
-        )}
-      </div>
+  {response && (
+    <div>
+      <h2>Output:</h2>
+      <ul>
+        {output?.slice(0, 10).map((item, index) => (
+          <li key={index}>
+            <a href={item.link} target="_blank" rel="noopener noreferrer">
+              {item.link}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</div>
+
     </PageContent>
   );
 };

@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const eventRoutes = require("./routes/events");
 const authRoutes = require("./routes/auth");
+var request = require("request");
 
 const openai = require("openai");
 openai.apiKey = "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";
@@ -31,16 +32,47 @@ app.use((req, res, next) => {
 //   }
 // });
 
-// app.post("/stack, async (req, res) => {
+// app.post("/chatgpt", async (req, res) => {
 //   const prompt = req.body.prompt;
 //   console.log(prompt);
-//   try {
-//     
-//     res.status(200).json({ message: resp.data.choices[0].message.content });
-//   } catch (e) {
-//     res.status(400).json({ message: e.message });
-//   }
+//   var options = {
+//     method: "POST",
+//     url: "https://api.openai.com/v1/chat/completions",
+//     headers: {
+//       Authorization:
+//         "Bearer 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",
+//       "Content-Type": "application/json",
+//       Cookie:
+//         "__cf_bm=vHzrq8iYJgifzY_4P_lrVAcEeUt3lCetdYJhB_sj6zA-1701979408-0-AR1ipIoZBgheMm1VM/qgQcbkpB/hdfmezTOnRKYHMSKwdk4EZI71ZKA9SoWN+h7LQfGmzbIwxKkNY+rgbJc9BFo=; _cfuvid=U.E6C1WfBw4wdex6YulOKdMdlrRQpCmvSZ3TGwWkBsE-1701978504088-0-604800000",
+//     },
+//     body: JSON.stringify({
+//       input: "Find The Error in given Code Sample: " + prompt,
+//       model: "text-embedding-ada-002",
+//       encoding_format: "float",
+//     }),
+//   };
+//   request(options, function (error, response) {
+//     if (error) throw new Error(error);
+//     console.log("jii");
+//     res.json( response.body )
+//     console.log(response.body)
+    
+    
+//   });
+
 // });
+
+app.post("/stack", async (req, res) => {
+  
+  const prompt = req.body.prompt;
+  console.log(prompt);
+  try {
+
+    res.status(200).json({ message: res.data.choices[0].message.content });
+  } catch (e) {
+    res.status(400).json({ message: e.message });
+  }
+});
 
 app.use(authRoutes);
 
